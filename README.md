@@ -33,7 +33,7 @@ At [70kft](http://70kft.com), we commonly receive requests to add a blog to our 
 ## Installation
 
 1. Unzip file and place `instablog` directory into your `craft/plugins` directory
-2.  -OR- do a `git clone https://github.com/70kft/instablog.git` directly into your `craft/plugins` folder.  You can then update it with `git pull`
+2.  -OR- do a `git clone https://github.com/70kft/craft-instablog.git .` directly into your `craft/plugins` folder.  You can then update it with `git pull`
 3. Install plugin in the Craft Control Panel under Settings > Plugins
 
 During install InstaBlog will create a category group, tag group, field group, fields, and a section called InstaBlog. Additionally, InstaBlog will create a folder called `blog` in your site template folder. Within that folder various twig template files will be created. You can modify these as you would your own site templates.
