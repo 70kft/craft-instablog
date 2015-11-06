@@ -1,0 +1,43 @@
+{% set queryString = query is defined ? '?q=' ~ query : '' %}
+  {% if entries|length %}
+    {% for blog in entries %}
+      <article itemtype="http://schema.org/Article">
+        <header>
+          <h4><a href="/{{ blog.uri }}" itemprop="name">{{ blog.title }}</a></h4>
+        </header>
+        <div>
+          <span itemprop="author">{{ blog.author.fullName }}</span>
+        </div>
+        <div itemprop="articleBody">
+          <span itemprop="datePublished">{{ blog.postDate.format('F d, Y') }}</span> - {{ blog.instaBlogBody|striptags|truncate(240) }}
+          <a class="more" href="/{{ blog.uri }}">Read More</a>
+        </div>
+        <footer>
+          {% include 'blog/_share.twig' %}
+        </footer>
+      </article>
+    {% endfor %}
+
+      <nav>
+        {# Customize Pagination links Ref: http://buildwithcraft.com/docs/templating/paginate #}
+          {% if paginate.prevUrl %}
+            <a href="{{ paginate.firstUrl ~ queryString }}">First</a>
+            <a href="{{ paginate.prevUrl ~ queryString }}"><<</a>
+          {% endif %}
+
+          {% for page, url in paginate.getPrevUrls(5) %}
+              <a href="{{ url ~ queryString }}">{{ page }}</a>
+          {% endfor %}
+
+          <span class="current">{{ paginate.currentPage }}</span>
+
+          {% for page, url in paginate.getNextUrls(5) %}
+              <a href="{{ url ~ queryString }}">{{ page }}</a>
+          {% endfor %}
+
+          {% if paginate.nextUrl %}
+            <a href="{{ paginate.nextUrl ~ queryString }}">>></a>
+            <a href="{{ paginate.lastUrl ~ queryString }}">Last</a>
+          {% endif %}
+      </nav>
+  {% endif %}

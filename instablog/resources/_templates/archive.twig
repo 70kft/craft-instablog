@@ -1,0 +1,32 @@
+{% extends craft.instaBlog.settings.layout|length ? craft.instaBlog.settings.layout : 'blog/_instablog-layout' %}
+
+{% block content %}
+<section id="instablog">
+  <header>
+    <h1>Blog</h1>  
+  </header>
+
+    <article>
+      {# To customize ref: http://buildwithcraft.com/help/entry-archive #}
+      <h1>Archive</h1>
+
+      {% set allEntries = craft.entries.section('instaBlog').limit(null) %}
+      {% for year, entriesInYear in allEntries | group("postDate.year") %}
+        <h2>{{ year }}</h2>
+        <ul>
+            {% for month, entriesInMonth in entriesInYear | group("postDate|date('F')") %}
+                <h3>{{ month }}</h3>
+                <ul>
+                    {% for entry in entriesInMonth %}
+                        <li>{{ entry.getLink() }}</li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        </ul>
+      {% endfor %}
+
+  </article>
+
+  {% include 'blog/_aside.twig' %}
+</section>
+{% endblock %}

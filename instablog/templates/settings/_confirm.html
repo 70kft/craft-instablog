@@ -1,0 +1,80 @@
+{% extends "_layouts/cp" %}
+{% import "_includes/forms" as forms %}
+
+{% set tabs = {
+    settings: { label: "Settings"|t, url: url('instablog/settings/index') },
+    import:    { label: "WP Import"|t, url: url('instablog/settings/import') }
+} %}
+
+{% set selectedTab = '' %}
+
+{% set title = "InstaBlog"|t %}
+{% set plugin = craft.plugins.getPlugin('InstaBlog') %}
+{% set pluginSettings = craft.instaBlog.settings() %}
+{% set assetSources = craft.instaBlog.getSources() %}
+
+{% includeJsResource 'instaBlog/js/instablog.js' %}
+
+{% block content %}
+
+<h2>Select Items to Import</h2>
+<form action="" method="POST" data-saveshortcut>
+  <input type="hidden" name="action" value="instaBlog/import/start">
+  <input type="hidden" name="redirect" value="instablog/settings/import">
+  <input type="hidden" name="pluginClass" value="{{ plugin.classHandle }}">
+  <input type="hidden" name="backup" value="{{ import.backup }}">
+  <input type="hidden" name="assetDestination" value="{{ import.assetDestination }}">
+  <input type="hidden" name="file" value="{{ file }}">
+  {{ getCsrfInput() }}
+  <h2>Authors</h2>
+  <table class="data" class="full-width" id="authors">
+    <thead>
+      <tr>
+        <th><input type="checkbox" id="toggleAllAuthors" checked="checked"></th>
+        <th>Name</th>
+        <th>Username</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+  {% if authors|length %}
+    {% for author in authors  %}
+        {% if author.author_login|length %}
+        <tr>
+          <td><input type="checkbox" name="import[]" value="authors_{{ author.author_login }}" checked="checked"></td>
+          <td>{{ author.author_first_name }} {{ author.author_last_name }}</td>
+          <td>{{ author.author_login }}</td>
+          <td>{{ author.author_email }}</td>
+        </tr>
+        {% endif %}
+    {% endfor %}
+  {% endif %}
+    </tbody>
+  </table>
+  <hr>
+  <h2>Posts</h2>
+  <table class="data" class="full-width" id="posts">
+    <thead>
+      <tr>
+        <th><input type="checkbox" id="toggleAllPosts" checked="checked"></th>
+        <th>Title</th>
+        <th>PubDate</th>
+      </tr>
+    </thead>
+    <tbody>
+  {% if authors|length %}
+    {% for post in posts %}
+        <tr>
+          <td><input type="checkbox" name="import[]" value="posts_{{ post.post_id }}" checked="checked"></td>
+          <td>{{ post.post_title }}</td>
+          <td>{{ post.post_date|date("m/d/Y") }}</td>
+        </tr>
+    {% endfor %}
+  {% endif %}
+    </tbody>
+  </table>
+
+  <hr>
+  <input type="submit" value="Do It" class="btn submit">
+</form>
+{% endblock %}

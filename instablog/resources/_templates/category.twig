@@ -1,0 +1,50 @@
+{% extends craft.instaBlog.settings.layout|length ? craft.instaBlog.settings.layout : 'blog/_instablog-layout' %}
+
+{% block content %}
+<section id="instablog">
+  <header>
+    <h1>Blog</h1>  
+  </header>
+
+  {% if craft.request.segment(3) == '' %}
+
+    <article>
+      <h1>Category</h1>
+      <h2>Browse categories below:</h2>
+      <ul>
+        {% nav category in craft.categories.group('instaBlogCategories') %}
+          <li>
+            <a href="{{ category.url }}">{{ category.title }}</a>
+            {% ifchildren %}
+              <ul>
+                {% children %}
+              </ul>
+            {% endifchildren %}
+          </li>
+        {% endnav %}
+      </ul>
+    </article>
+
+  {% else %}
+
+    {% paginate craft.entries.section('instaBlog').relatedTo(category).limit(10) as entries %}  
+
+      {% if entries|length %}
+        <article>
+          <h1>Category</h1>
+          <h2>&ldquo;{{ category.slug|title }}&rdquo;</h2>    
+          {{ category.instaBlogBody }}
+        </article>
+
+        {% include 'blog/_entries.twig' %}
+
+      {% else %}
+        {% include 'blog/_not-found.twig' with {'type': 'category'} %}
+      {% endif %}
+
+      {% endpaginate %}
+    {% endif %}
+
+  {% include 'blog/_aside.twig' %}
+</section>
+{% endblock %}

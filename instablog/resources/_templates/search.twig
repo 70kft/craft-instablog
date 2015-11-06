@@ -1,0 +1,33 @@
+{% extends craft.instaBlog.settings.layout|length ? craft.instaBlog.settings.layout : 'blog/_instablog-layout' %}
+
+{% if craft.request.getParam('q') is defined %}
+  {% set query = craft.request.getParam('q') %}
+{% else %}
+  {% set query = "" %}
+{% endif %}
+
+{% block content %}
+<section id="instablog">
+  <header>
+    <h1>Blog</h1>  
+  </header>
+  
+  {% paginate craft.entries.search(query).section('instaBlog').limit(10).order('score') as entries %}
+
+    {% if entries|length %}
+      <article>
+        <h2>Search results for:</h2>
+        <h3>&ldquo;{{ query | title }}&rdquo;</h3>
+      </article>
+
+      {% include 'blog/_entries.twig' %}
+
+    {% else %}
+      {% include 'blog/_not-found.twig' with {'type': 'search'} %}
+    {% endif %}
+
+  {% endpaginate %}
+
+  {% include 'blog/_aside.twig' %}
+</section>
+{% endblock %}

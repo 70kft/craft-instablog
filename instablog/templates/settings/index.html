@@ -1,0 +1,86 @@
+{% extends "_layouts/cp" %}
+{% import "_includes/forms" as forms %}
+
+{% set tabs = {
+    settings: { label: "Settings"|t, url: url('instablog/settings/index') },
+    import:    { label: "WP Import"|t, url: url('instablog/settings/import') }
+} %}
+
+{% set selectedTab = 'settings' %}
+
+{% set title = "InstaBlog"|t %}
+{% set plugin = craft.plugins.getPlugin('InstaBlog') %}
+{% set pluginSettings = craft.instaBlog.settings() %}
+
+{% block content %}
+  <h2>InstaBlog Settings</h2>
+  <p>InstaBlog will create templates in your template folder in a subdirectory called "blog". </p>
+  <p>The blog templates are bare bones. You'll need to style them in order to have something nice to look at.</p>
+  <p>By default, the layout used by the blog is <code>blog/_instablog-layout.twig</code> however you can change that by asigning a different layout for the blog to extend below.
+  </p>
+  <hr>
+
+  <form action="" method="POST" data-saveshortcut>
+    <input type="hidden" name="action" value="plugins/savePluginSettings">
+    <input type="hidden" name="redirect" value="instablog/settings/index">
+    <input type="hidden" name="pluginClass" value="{{ plugin.classHandle }}">
+    {{ getCsrfInput() }}
+    <h2>InstaBlog Layout Template</h2>
+    {{ forms.textField({
+      class: 'code',
+      placeholder: 'blog/_instablog-layout',
+      instructions: 'Leave this blank if you would like to use the default InstaBlog layout. Otherwise add your site layout here. Example: _layout',
+      label: 'Layout',
+      name: 'settings[layout]',
+      value: pluginSettings.layout is defined ? pluginSettings.layout : ''
+    }) }}
+    
+    <hr>
+    <h2>Social Settings</h2>
+    {{ forms.textField({
+      class: 'code',
+      instructions: 'Add your default Facebook profile link. Example: https://www.facebook.com/70kft?fref=ts',
+      label: 'Facebook',
+      name: 'settings[facebook]',
+      value: pluginSettings.facebook is defined ? pluginSettings.facebook : ''
+    }) }}
+
+    {{ forms.textField({
+      class: 'code',
+      instructions: 'Add your default Twitter profile handle. Example: @70kft',
+      label: 'Twitter',
+      name: 'settings[twitter]',
+      value: pluginSettings.twitter is defined ? pluginSettings.twitter : ''
+    }) }}
+
+    {{ forms.textField({
+      class: 'code',
+      instructions: 'Add your default Google+ profile link. Example: https://twitter.com/70kft',
+      label: 'Google+',
+      name: 'settings[googlePlus]',
+      value: pluginSettings.googlePlus is defined ? pluginSettings.googlePlus : ''
+    }) }}
+
+    {{ forms.textField({
+      class: 'code',
+      instructions: 'Add your default LinkedIn profile link. Example: https://www.linkedin.com/company/205357',
+      label: 'LinkedIn+',
+      name: 'settings[linkedin]',
+      value: pluginSettings.linkedin is defined ? pluginSettings.linkedin : ''
+    }) }}
+
+    <hr>
+    <h2>Disqus Settings</h2>
+    {{ forms.textField({
+      class: 'code',
+      instructions: 'Enter your Disqus Short Name (disqus_shortname) here to enable Disqus. To disable, leave blank. Sign up for Disqus <a href="https://disqus.com/profile/signup/" target="_blank">here</a>', 
+      label: 'Disqus Site Short Name', 
+      name: 'settings[disqus]', 
+      value: pluginSettings.disqus is defined ? pluginSettings.disqus : ''
+    }) }}
+
+    <hr>
+    <input type="submit" value="Save Settings" class="btn submit">
+  </form>
+
+{% endblock %}

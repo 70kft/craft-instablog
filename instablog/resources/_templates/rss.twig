@@ -1,0 +1,28 @@
+{% set replace = {
+  'src="/images': 'src="http://' ~ craft.request.serverName ~ '/images'
+} %}
+{% header "Content-Type: application/rss+xml" %}
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ siteName }} Blog</title>
+    <link>{{ siteUrl }}</link>
+    <atom:link href="{{ craft.request.url }}" rel="self" type="application/rss+xml" />
+    <description>{{ siteName }} Blog</description>
+    <language>en-us</language>
+    <pubDate>{{ now.rss }}</pubDate>
+    <lastBuildDate>{{ now.rss }}</lastBuildDate>
+{% for item in craft.entries({ section: 'instaBlog' }) %}
+    <item>
+      <title>{{ item.title }}</title>
+      <link>{{ item.url }}</link>
+      <description><![CDATA[
+        {{ item.instaBlogBody|replace(replace)|raw }}
+      ]]></description>
+      <pubDate>{{ item.postDate.rss }}</pubDate>
+      <author>{{ item.author }}</author>
+      <guid>{{ item.url }}</guid>
+    </item>
+{% endfor %}
+  </channel>
+</rss>

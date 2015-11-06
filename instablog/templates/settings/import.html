@@ -1,0 +1,59 @@
+{% extends "_layouts/cp" %}
+{% import "_includes/forms" as forms %}
+
+{% set tabs = {
+    settings: { label: "Settings"|t, url: url('instablog/settings/index') },
+    import:    { label: "WP Import"|t, url: url('instablog/settings/import') }
+} %}
+
+{% set selectedTab = 'import' %}
+
+{% set title = "InstaBlog"|t %}
+{% set plugin = craft.plugins.getPlugin('InstaBlog') %}
+{% set pluginSettings = craft.instaBlog.settings() %}
+{% set assetSources = craft.instaBlog.getSources() %}
+
+
+{% block content %}
+  <h2>InstaBlog Wordpress Import</h2>
+  <p>
+    To import Wordpress posts into your InstaBlog you'll need an XML export from Wordpress "Tools > Export".
+  </p>
+  <h1>
+    <a href="https://codex.wordpress.org/Tools_Export_Screen" target="_blank" class="help" id="help"></a>
+  </h1>
+  <p><em class="warning">Note: For images to be imported, they must be accessible via the url's in your XML file.</em></p>
+  <hr>
+  
+  <h2>Import Settings</h2>
+  <form action="" method="POST" data-saveshortcut  enctype="multipart/form-data">
+    <input type="hidden" name="action" value="instaBlog/import/confirm">
+    <input type="hidden" name="redirect" value="instablog/settings/import">
+    <input type="hidden" name="pluginClass" value="{{ plugin.classHandle }}">
+    {{ getCsrfInput() }}
+    {{ forms.fileField({
+      instructions: 'Upload Wordpress Export XML file.',
+      label: 'Import File',
+      name: 'file',
+    }) }}
+
+    {{ forms.selectField({
+      instructions: 'Select asset location for imported images.',
+      label: 'Asset Destination',
+      name: 'import[assetDestination]',
+      options: assetSources
+    }) }}
+    <hr>
+    <h2>Backup Database</h2>
+    <p>Backup will be stored in <code>craft/storage/backups</code>.</p>
+    {{ forms.checkboxField({
+      label: 'Backup Database Before Import',
+      name: 'import[backup]',
+      value: 1
+    }) }}
+    <hr>
+    <input type="submit" value="Next" class="btn submit">
+
+  </form>
+
+{% endblock %}

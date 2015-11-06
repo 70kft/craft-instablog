@@ -1,0 +1,62 @@
+{% if query is defined %}
+{% else %}
+  {% set query = "" %}
+{% endif %}
+
+    <aside>
+      <h3>
+        <a href="/blog">Blog</a>
+      </h3>
+      <h4>
+        <a href="/blog/archive">Archive</a>
+      </h4>
+      <h4>
+        <a href="/blog/author">Authors</a>
+      </h4>
+      <form action="/blog/search">
+        <label for="search">
+          <h4>Search</h4>
+        </label>
+        <div>
+          <input type="text" name="q" placeholder="Search" value="{{ query }}" tabindex="1">
+          <button type="submit"><span class="fa fa-search"></span></button>
+        </div>
+      </form>
+      
+      <h4>Popular Tags</h4>
+      {% set allEntries = craft.entries.section('instaBlog').limit(null) %}
+      {% set tags = craft.tags.group('instaBlogTags').relatedTo(allEntries) %}
+      <ul>
+      {% for tag in tags %}
+        <li><a href="/blog/tag/{{ tag.name|split(' ')|join('-')|lower }}">{{ tag.name }}</a>
+      {% endfor %}          
+      </ul>
+
+      <h4>Categories</h4>
+      <ul>
+        {% nav category in craft.categories.group('instaBlogCategories') %}
+          <li>
+            <a href="{{ category.url }}">{{ category.title }}</a>
+            {% ifchildren %}
+              <ul>
+                {% children %}
+              </ul>
+            {% endifchildren %}
+          </li>
+        {% endnav %}
+      </ul>
+
+      <h4>Follow Us</h4>
+      {% if craft.instaBlog.settings.facebook|length %}
+        <a class="fa fa-facebook-square fa-2" href="{{ craft.instaBlog.settings.facebook }}"></a>
+      {% endif %}
+      {% if craft.instaBlog.settings.twitter|length %}
+        <a class="fa fa-twitter-square fa-2" href="{{ craft.instaBlog.settings.twitter }}"></a>
+      {% endif %}
+      {% if craft.instaBlog.settings.googlePlus|length %}
+        <a class="fa fa-google-plus-square fa-2" href="{{ craft.instaBlog.settings.googlePlus }}"></a>
+      {% endif %}
+      {% if craft.instaBlog.settings.linkedin|length %}
+        <a class="fa fa-linkedin-square fa-2" href="{{ craft.instaBlog.settings.linkedin }}"></a>
+      {% endif %}
+    </aside>

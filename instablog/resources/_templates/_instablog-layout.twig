@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>{% if entry is defined %}{{ entry.title }} - {% endif %}{{ siteName }}</title>
+    <meta name="description" content="{% if entry is defined %}{{ entry.instaBlogBody|striptags|truncate(180) }}{% endif %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="home" href="//{{ craft.request.serverName }}{{ craft.request.getPort != 80 ? ':' ~ craft.request.getPort : '' }}">
+    
+    {% if entry.instaBlogBody is defined %}
+        {# Google+ rel Links #}
+        {% set googlePlus = entry.author.instaBlogGooglePlus ? entry.author.instaBlogGooglePlus : craft.instaBlog.settings.googlePlus %}
+        {% if googlePlus|length %}
+        <link rel="author" href="{{ googlePlus }}">
+        <link rel="publisher" href="{{ craft.instaBlog.settings.googlePlus }}">
+        {% endif %}
+
+        {# Open Graph data #}
+        {% set facebook = entry.author.instaBlogFacebook ? entry.author.instaBlogFacebook : craft.instaBlog.settings.facebook %}
+        {# <meta property="og:image" content="{{ entry.listIcon|first.getUrl({width: 600}) }}"> #}
+        {# <meta property="og:image" content="/images/facebook70kft.png"> #}
+        <meta name="author" content="{{ entry.author.fullName }}">
+        <meta property="og:type" content="article">
+        <meta property="og:url" content="{{ craft.request.url }}" >
+        <meta property="og:title" content="{{ entry.title }}">
+        <meta property="og:description"  content="{{ entry.postDate.format('M d, Y') }} - {{ entry.body|striptags|truncate(180) }}">
+        <meta property="og:site_name" content="{{ siteName }}">
+        <meta property="article:published_time" content="{{ entry.dateCreated.iso8601 }}">
+        <meta property="article:modified_time" content="{{ entry.dateUpdated.iso8601 }}">
+        {% if entry.expiryDate|length %}<meta property="article:expiration_time" content="{{ entry.expiryDate.iso8601 }}">{% endif %}
+        <meta property="article:author" content="{{ facebook }}">
+        {% for tag in entry.instaBlogTags %}
+        <meta property="article:tag" content="{{ tag }}">
+        {% endfor %}
+
+        {# Schema.org markup for Google+  #}
+        <meta itemprop="name" content="{{ entry.title }}">
+        <meta itemprop="description" content="{{ entry.postDate.format('M d, Y') }} - {{ entry.instaBlogBody|striptags|truncate(180) }}">
+        {# <meta itemprop="image" content="{{ entry.listIcon|first.getUrl({width: 600}) }}"> #}
+        {# <meta itemprop="image" content="/images/facebook70kft.png"> #}
+
+        {# Twitter Card data #}
+        {% set twitter = entry.author.instaBlogTwitter ? entry.author.instaBlogTwitter : craft.instaBlog.settings.twitter %}
+        {% if twitter|length %}
+        <meta name="twitter:card" content="summary">
+        {# <meta name="twitter:image:src"content="{{ entry.listIcon|first.getUrl({width: 600}) }}"> #}
+        <meta name="twitter:site" content="{{ twitter }}">
+        <meta name="twitter:title" content="{{ entry.title }}">
+        <meta name="twitter:description" content="{{ entry.instaBlogBody|striptags|truncate(180) }}">
+        <meta name="twitter:url" content="{{ craft.request.url }}">
+        <meta name="twitter:creator" content="{{ twitter }}">
+        {% endif %}
+    {% endif %}
+
+    {% includeCssResource "instablog/css/font-awesome.min.css" %}
+    {% includeCssResource "instablog/css/instablog.css" %}
+  </head>
+
+  <body>
+
+    {% block content %}
+    {% endblock %}
+
+  </body>
+</html>

@@ -1,0 +1,33 @@
+#instablog {
+  box-sizing: border-box;
+  font-family: "Helvetica Neue",arial,sans-serif;
+  max-width: 900px;
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+}
+#instablog article {
+  box-sizing: border-box;
+  display: block;
+  vertical-align: top;
+  padding: 40px;
+  width: 100%;
+}
+
+#instablog nav {
+  box-sizing: border-box;
+  padding: 40px;
+}
+
+#instablog aside {
+  box-sizing: border-box;
+  border-top: solid 1px #ccc;
+  display: block;
+  vertical-align: top;
+  padding: 40px;
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
+}

@@ -1,0 +1,55 @@
+{% extends craft.instaBlog.settings.layout|length ? craft.instaBlog.settings.layout : 'blog/_instablog-layout' %}
+
+{% set authorSegment = craft.request.segment(3) %}
+
+{% block content %}
+<section id="instablog">
+  <header>
+    <h1>Blog</h1>  
+  </header>
+
+  {% if authorSegment == '' %}
+
+    <article>
+      <h1>Authors</h1>
+      <h2>Browse posts by author:</h2>
+      {% set entries = craft.entries.section('instaBlog').find() %}
+      {% set entriesByAuthor = entries|group('authorId') %}
+      {% set authors = craft.users.id(entriesByAuthor|keys) %}
+
+      <ul>
+          {% for author in authors %}
+            <li><a href="/blog/author/{{ author.username }}">{{ author.name }}</a></li>
+          {%  endfor %}
+      </ul>
+    </article>
+
+  {% else %}
+    {% set author = craft.users.username(authorSegment).first() %}
+    
+    {% if not author %}
+        {% exit 404 %}
+    {% endif %}
+
+    {% paginate craft.entries.section('instaBlog').authorId(author.id).limit(10) as entries %}  
+
+      {% if entries|length %}
+        <article>
+          {% if author.photoUrl|length %}
+            <p><img src="{{ author.photoUrl }}" alt="{{ author.fullName }}" width="100"></p>
+          {% endif %}
+          <h1><a href="/blog/author/{{ author.username }}" rel="author">{{ author.fullName }}</a></h1>
+        </article>
+
+        {% include 'blog/_entries.twig' %}
+
+      {% else %}
+        {% include 'blog/_not-found.twig' with {'type': 'author'} %}
+      {% endif %}
+
+      {% endpaginate %}
+    {% endif %}
+
+  {% include 'blog/_aside.twig' %}
+</section>
+{% endblock %}
