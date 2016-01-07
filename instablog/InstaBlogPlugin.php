@@ -16,7 +16,7 @@ class InstaBlogPlugin extends BasePlugin
 
   public function getVersion()
   {
-    return '1.0';
+    return '1.1';
   }
 
 
@@ -31,10 +31,24 @@ class InstaBlogPlugin extends BasePlugin
     return 'http://70kft.com';
   }
 
+  public function getDescription()
+  {
+    return 'A plugin to quickly set up a blog on Craft CMS websites and to migrate content from WordPress.';
+  }
+
+  public function getDocumentationUrl()
+  {
+    return 'https://github.com/70kft/craft-instablog';
+  }
+
+  public function getReleaseFeedUrl()
+  {
+    return 'https://raw.githubusercontent.com/70kft/craft-instablog/master/releases.json';
+  }
 
   public function getSettingsUrl()
   {
-    return UrlHelper::getUrl('/instablog/settings');
+    return 'instablog/settings';
   }
 
 
