@@ -82,12 +82,6 @@ class InstaBlogPlugin extends BasePlugin
 
   public function onBeforeInstall()
   {
-    if (!((craft()->getEdition() > 0) || craft()->sections->canHaveMore("channel")))
-    {
-      throw new Exception(Craft::t('Your version of Craft only permits one channel section. '
-        . 'Please upgrade or remove the existing channel section before installing InstaBlog.'));
-    }
-
     $craftTemplateFolder = realpath(CRAFT_TEMPLATES_PATH);
 
     if ((!IOHelper::isWritable($craftTemplateFolder)))

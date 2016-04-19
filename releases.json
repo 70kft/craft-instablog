@@ -16,4 +16,12 @@
         "[Fixed] Fixed deprecation errors for endpagination in templates.",
         "[Fixed] Fixed broken control panel links."
     ]
+}, {
+    "version": "1.2",
+    "downloadUrl": "https://github.com/70kft/craft-instablog/archive/v1.2.zip",
+    "date": "2016-04-19T11:00:00-06:00",
+    "notes": [
+        "# Minor Updates for Craft 2.5 compatibility",
+        "[Fixed] Fixed personal install error regarding 'canHaveMore'."
+    ]
 }]
