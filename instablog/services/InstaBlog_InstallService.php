@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace Craft;
 
 class InstaBlog_InstallService extends BaseApplicationComponent
@@ -403,6 +403,7 @@ class InstaBlog_InstallService extends BaseApplicationComponent
 
     if (craft()->isLocalized())
     {
+      $primaryLocaleId = craft()->i18n->getPrimarySiteLocaleId();
       $localeIds = craft()->i18n->getSiteLocaleIds();
     }
     else
@@ -557,7 +558,7 @@ class InstaBlog_InstallService extends BaseApplicationComponent
 
     Craft::log('Copying InstaBlog templates to templates/blog directory.',
      LogLevel::Info, true, '_copyTemplates', 'InstaBlog');
-    
+
     if (IOHelper::copyFolder($instaBlogFolder, $instaBlogTargetFolder, true))
     {
       Craft::log($instaBlogFolder.' copied to '.$instaBlogTargetFolder.' successfully.',
