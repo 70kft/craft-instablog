@@ -236,7 +236,12 @@ class InstaBlog_ImportService extends BaseApplicationComponent
     {
       if ($postmetaArray['key'] === '_thumbnail_id')
       {
-        $featuredImage[] = $this->_importFeaturedImage($settings, $post['post_link'], $baseUrl);
+        $importFeaturedImage = $this->_importFeaturedImage($settings, $post['post_link'], $baseUrl);
+		
+        if ($importFeaturedImage)
+		{
+          $featuredImage[] = $importFeaturedImage;
+        }
       }
     }
 
