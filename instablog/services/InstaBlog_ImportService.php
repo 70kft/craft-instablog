@@ -239,7 +239,7 @@ class InstaBlog_ImportService extends BaseApplicationComponent
         $importFeaturedImage = $this->_importFeaturedImage($settings, $post['post_link'], $baseUrl);
 		
         if ($importFeaturedImage)
-		{
+        {
           $featuredImage[] = $importFeaturedImage;
         }
       }
